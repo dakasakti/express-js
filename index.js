@@ -19,9 +19,19 @@ const fs = require('fs');
 const DIRECTORY_NAME = 'database';
 const FILE_NAME = 'database/credentials.json';
 
+const path = require('path');
+
+// config view-engine
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+
+// config static-content
+app.use('/storage', express.static(path.join(__dirname, 'public')));
+
 // router
 app.get('/', (req, res) => {
-  return res.send({ author: 'Dakasakti' });
+  // return res.send({ author: 'Dakasakti' });
+  return res.render('welcome', { author: 'Dakasakti' });
 });
 
 app.post('/register', (req, res) => {
@@ -224,7 +234,8 @@ app.get('/profiles', (req, res) => {
 
 // fallback
 app.all('*', (req, res) => {
-  res.status(404).send('<h1>Page Not Found</h1>');
+  // res.status(404).send('<h1>Page Not Found</h1>');
+  res.render('errors/404');
 });
 
 app.listen(3000, () => {
